@@ -1,48 +1,92 @@
 <script lang="ts">
 	let maxRoll: number | undefined = $state();
-	let roll: number | undefined = $state();
+	let dice: (number | undefined)[] = $state([undefined]);
+	let mustMatch = $state(1);
+	let isAdvantage = $derived(mustMatch === 1 && dice.length === 2);
+	let isDisadvantage = $derived(mustMatch === 2 && dice.length === 2);
 	function success(lo?: number, hi?: number) {
-		if (!roll || !lo || !hi) return '';
-		if (roll >= lo && roll <= hi) {
+		if (!lo || !hi) return '';
+		// Array methods don't seem to work reliably on the Proxy object, so take a snapshot
+		const diceSnap = $state.snapshot(dice);
+		if (!diceSnap.every(Boolean)) return '';
+		const inRange = (n: number | undefined) => n && n >= lo && n <= hi;
+		const matched = diceSnap.filter(inRange).length;
+		if (matched >= mustMatch) {
 			return 'success';
 		} else {
 			return 'fail';
 		}
 	}
-	function rollDie(n: number) {
-		roll = undefined;
-		maxRoll = n;
-		setTimeout(() => {
-			roll = Math.floor(Math.random() * n) + 1;
+
+	function toggleVantage(match: number) {
+		if (dice.length === 2 && match === mustMatch) {
+			dice.length = 1;
+			mustMatch = 1;
+		} else {
+			dice.length = 2;
+			mustMatch = match;
+		}
+	}
+
+	$effect(() => {
+		if (!maxRoll) return;
+		// if all the dice already have a value, we don't need to roll
+		let allDefined = $state.snapshot(dice).every(Boolean);
+		if (allDefined) return;
+		const timeout = setTimeout(() => {
+			if (!maxRoll) return;
+			for (let i = 0; i < dice.length; i++) {
+				if (dice[i]) continue;
+				dice[i] = Math.floor(Math.random() * maxRoll) + 1;
+			}
 		}, 1500);
+		return () => clearTimeout(timeout);
+	});
+
+	function rollDie(n: number) {
+		// set dice to a new cleared array to force the effect to trigger
+		let cleared: typeof dice = [];
+		cleared.length = dice.length;
+		dice = cleared;
+		maxRoll = n;
 	}
 </script>
 
-{#snippet die(n)}
-	<button onclick={() => rollDie(n)} class={`d${n}`}>
+{#snippet roll(n)}
+	<button onclick={() => rollDie(n)} class="roll d{n}">
 		Roll D{n}
 	</button>
 {/snippet}
 
 <div class="flex w-full">
-	<table>
-		<thead>
-			<tr><th>Role</th><th>Die</th></tr>
-		</thead>
-		<tbody>
-			<tr><td>Expert</td><td>{@render die(4)}</td> </tr>
-			<tr><td>Vanguard</td><td>{@render die(6)}</td></tr>
-			<tr><td>Fighter</td><td>{@render die(8)}</td></tr>
-			<tr><td>Tank</td><td>{@render die(10)}</td></tr>
-		</tbody>
-	</table>
+	<div>
+		<table>
+			<thead>
+				<tr><th>Role</th><th>Roll</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>Expert</td><td>{@render roll(4)}</td> </tr>
+				<tr><td>Vanguard</td><td>{@render roll(6)}</td></tr>
+				<tr><td>Fighter</td><td>{@render roll(8)}</td></tr>
+				<tr><td>Tank</td><td>{@render roll(10)}</td></tr>
+			</tbody>
+		</table>
 
-	<div class="grid w-16 flex-1 place-content-center">
-		<div
-			class={`d${maxRoll || 0} ${maxRoll && !roll ? 'animate-spin' : ''} size-40 place-content-center rounded-lg text-center text-8xl`}
-		>
-			{roll}
-		</div>
+		<button onclick={() => toggleVantage(1)} class="vantage" class:enabled={isAdvantage}>
+			Advantage
+		</button>
+
+		<button onclick={() => toggleVantage(2)} class="vantage" class:enabled={isDisadvantage}>
+			Disdvantage
+		</button>
+	</div>
+
+	<div class="grid w-16 flex-1 place-content-center gap-12">
+		{#each dice as roll}
+			<div class="die d{maxRoll || 0}" class:animate-spin={maxRoll && !roll}>
+				{roll}
+			</div>
+		{/each}
 	</div>
 
 	<table class="flex-2">
@@ -81,22 +125,6 @@
 	</table>
 </div>
 
-<article class="prose prose-sm">
-	<h1>'Vantage</h1>
-	<dl>
-		<dt>Advantage</dt>
-		<dd>succeed if either roll succeeds</dd>
-		<dt>Disadvantage</dt>
-		<dd>succeed if both rolls succeed</dd>
-	</dl>
-
-	<h1>Moment</h1>
-	<p>
-		Each player gets a Moment. Can be roll, description, action, or spend. Everyone has an option to
-		take a moment before anyone else gets another moment.
-	</p>
-</article>
-
 <style lang="postcss">
 	thead th {
 		@apply bg-slate-700 text-white;
@@ -110,8 +138,11 @@
 	td {
 		@apply px-4 py-1;
 	}
-	button {
+	.roll {
 		@apply m-2 h-12 w-20 rounded-lg;
+	}
+	.die {
+		@apply size-28 place-content-center rounded-lg text-center text-8xl;
 	}
 	.d0 {
 		@apply bg-slate-400;
@@ -133,5 +164,11 @@
 	}
 	.fail {
 		@apply bg-slate-200;
+	}
+	.vantage {
+		@apply m-2 rounded-lg border-2 border-slate-600 p-2;
+	}
+	.vantage.enabled {
+		@apply bg-slate-600 text-white;
 	}
 </style>
