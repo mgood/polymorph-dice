@@ -150,25 +150,25 @@
 		@apply px-4 py-1;
 	}
 	.roll {
-		@apply m-2 h-12 w-20 rounded-lg;
+		@apply m-2 h-12 w-20 rounded-lg text-white;
 	}
 	.die {
-		@apply size-28 place-content-center rounded-lg text-center text-8xl;
+		@apply size-28 place-content-center rounded-lg text-center text-8xl text-white;
 	}
 	.d0 {
 		@apply bg-slate-400;
 	}
 	.d4 {
-		@apply bg-rose-500 text-white;
+		@apply bg-rose-500;
 	}
 	.d6 {
-		@apply bg-yellow-500 text-white;
+		@apply bg-yellow-500;
 	}
 	.d8 {
-		@apply bg-emerald-600 text-white;
+		@apply bg-emerald-600;
 	}
 	.d10 {
-		@apply bg-cyan-600 text-white;
+		@apply bg-cyan-600;
 	}
 	.success {
 		@apply bg-green-200;
