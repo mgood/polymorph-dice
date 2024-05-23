@@ -14,7 +14,7 @@
 		maxRoll = n;
 		setTimeout(() => {
 			roll = Math.floor(Math.random() * n) + 1;
-		}, 2000);
+		}, 1500);
 	}
 </script>
 
