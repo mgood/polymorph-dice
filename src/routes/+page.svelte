@@ -101,27 +101,27 @@
 		<tbody>
 			<tr class={success(1, 1)}>
 				<th>1</th>
-				<td>Key (Who You Are)</td>
+				<td>🗝️ Key (Who You Are)</td>
 			</tr>
 			<tr class={success(2, 3)}>
 				<th>2 3</th>
-				<td>Mental Activity</td>
+				<td>🧠 Mental Activity</td>
 			</tr>
 			<tr class={success(3, 5)}>
 				<th>3 4 5</th>
-				<td>Physical Activity</td>
+				<td>🏃‍♀️ Physical Activity</td>
 			</tr>
 			<tr class={success(4, 7)}>
 				<th>4 5 6 7</th>
-				<td>Conflict Resolution</td>
+				<td>✋ Conflict Resolution</td>
 			</tr>
 			<tr class={success(5, 9)}>
 				<th>5 6 7 8 9</th>
-				<td>Strength of Body or Spirit</td>
+				<td>💪 Strength of Body or Spirit</td>
 			</tr>
 			<tr class={success(maxRoll, maxRoll)}>
 				<th>Max Roll</th>
-				<td>Crown (Special Circumstances)</td>
+				<td>👑 Crown (Special Circumstances)</td>
 			</tr>
 		</tbody>
 		<tfoot>
