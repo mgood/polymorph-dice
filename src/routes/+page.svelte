@@ -1,4 +1,6 @@
 <script lang="ts">
+	import polymorphLogo from '$lib/assets/polymorph.avif';
+
 	let maxRoll: number | undefined = $state();
 	let dice: (number | undefined)[] = $state([undefined]);
 	let mustMatch = $state(1);
@@ -122,6 +124,15 @@
 				<td>Crown (Special Circumstances)</td>
 			</tr>
 		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="2" align="right">
+					<a href="https://9thlevel.com/pages/polymorph">
+						<img src={polymorphLogo} alt="built with polymorph" class="h-10" />
+					</a>
+				</td>
+			</tr>
+		</tfoot>
 	</table>
 </div>
 
