@@ -1,5 +1,6 @@
 <script lang="ts">
 	import polymorphLogo from '$lib/assets/polymorph.avif';
+	import GithubMark from '$lib/github-mark.svelte';
 
 	let maxRoll: number | undefined = $state();
 	let dice: (number | undefined)[] = $state([undefined]);
@@ -127,7 +128,10 @@
 		<tfoot>
 			<tr>
 				<td colspan="2" align="right">
-					<a href="https://9thlevel.com/pages/polymorph">
+					<a href="https://github.com/mgood/polymorph-dice" class="inline-block">
+						<GithubMark />
+					</a>
+					<a href="https://9thlevel.com/pages/polymorph" class="inline-block">
 						<img src={polymorphLogo} alt="built with polymorph" class="h-10" />
 					</a>
 				</td>
