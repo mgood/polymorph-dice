@@ -1,38 +1,16 @@
-# create-svelte
+# Polymorph Dice
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Simulate dice rolls for the [polymorph](https://9thlevel.com/pages/polymorph) RPG platform with a built-in success chart.
 
-## Creating a project
+[![built with polymorph](src/lib/assets/polymorph.avif)](https://9thlevel.com/pages/polymorph)
 
-If you're seeing this, you've probably already done this step. Congrats!
+See the [polymorph website](https://9thlevel.com/pages/polymorph) and rulebooks for additional details, but for using this app:
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+Each player gets assigned a specific die (d4, d6, d8, or d10) based on their "role".
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+When performing an action, click "Roll D?" to roll the die corresponding with a player's "role". If the value on the die is in the number range for the desired type of "Outcome" it is a success and will be highlighted in green. Failed "Outcome"s are greyed out.
 
-## Developing
+ If the player has an "Advantage" or "Disadvantage" for the current circumstances, clicking that button will add a second die roll. For "Advantage", "Outcome"s matching either die are successful. For "Disadvantage", both dice have to match for success.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## Support
+This was a quick project to get familiar with *polymorph* and to test out Svelte 5. I probably won't be spending much more time on this, but wanted to go ahead and publish it in case anyone else finds it useful.
